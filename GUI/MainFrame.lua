@@ -1,7 +1,5 @@
 local AddOnName, Engine = ...
-local E, L, V, P, G = unpack(Engine); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-
-
+local E, L, V, P, G = unpack(Engine); -- Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 function E.GUI:CreateMainFrame()
 	E.GUI.CollapseFrame.MainFrame = CreateFrame("Frame", nil, E.GUI.CollapseFrame);

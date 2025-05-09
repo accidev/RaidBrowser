@@ -1,5 +1,5 @@
 local AddOnName, Engine = ...
-local E, L, V, P, G = unpack(Engine); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(Engine); -- Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 E.Core.RaidCDInfo = {}
 
@@ -14,7 +14,7 @@ function E.Core:UpdateRaidCDInfo()
 			isCD = reset > 1,
 			savedSize = savedSize,
 			difficulty = difficulty,
-			locked = locked,
+			locked = locked
 		}
 	end
 end
@@ -41,7 +41,7 @@ function E.Core:GetRaidCDInfo(name, size, difficulty)
 		isCD = false,
 		savedSize = size,
 		difficulty = difficulty,
-		locked = false,
+		locked = false
 	}
 end
 

@@ -1,6 +1,5 @@
 local AddOnName, Engine = ...
-local E, L, V, P, G = unpack(Engine); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-
+local E, L, V, P, G = unpack(Engine); -- Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 function E.GUI:ChangeTabsGlow(index)
 	E.GUI.SetOriginalBackdrop(E.GUI.CollapseFrame.ShowFirstFrameTab)
@@ -82,10 +81,14 @@ function E.GUI:CreateCollapseFrame()
 		GameTooltip:SetOwner(self, "ANCHOR_CURSOR_RIGHT");
 		-- GameTooltip:AddDoubleLine(L["Time"], date("%Y-%m-%d %H:%M", self.raidInfo.lastSpamTime), 1, 1, 1, 1, 1, 0)
 		GameTooltip:AddLine(
-		"Для того чтобы |cff00ff00собрать рейд|r откройте настройки и нажмите |cff00ff00Начать|r в 1 вкладке", 1, 1, 1);
-		GameTooltip:AddLine("Для того чтобы |cff00ff00отправить сообщение|r нажмите  |cff00ff00ПКМ|r по окну RaidBroser",
+			"Для того чтобы |cff00ff00собрать рейд|r откройте настройки и нажмите |cff00ff00Начать|r в 1 вкладке",
 			1, 1, 1);
-		GameTooltip:AddLine("Если хотите |cff00ff00отправить сообщение рлу наведите мышкрой и нажмите ПКМ|r", 1, 1, 1);
+		GameTooltip:AddLine(
+			"Для того чтобы |cff00ff00отправить сообщение|r нажмите  |cff00ff00ПКМ|r по окну RaidBroser",
+			1, 1, 1);
+		GameTooltip:AddLine(
+			"Если хотите |cff00ff00отправить сообщение рлу наведите мышкрой и нажмите ПКМ|r",
+			1, 1, 1);
 		GameTooltip:Show();
 	end)
 	CollapseFrame:SetScript("OnLeave", function(self)
@@ -164,7 +167,9 @@ function E.GUI:CreateCollapseFrame()
 	-- CloseButton:Size(E.db.CollapseFrameHeight,E.db.CollapseFrameHeight);
 	E.GUI:Size(CloseButton, E.db.CollapseFrameHeight, E.db.CollapseFrameHeight)
 	CloseButton:SetPoint("TOPRIGHT", CollapseFrame, "TOPRIGHT", 0, 0);
-	CloseButton:SetScript("OnClick", function(self) E.GUI.CollapseFrame:Hide() end);
+	CloseButton:SetScript("OnClick", function(self)
+		E.GUI.CollapseFrame:Hide()
+	end);
 	CloseButton.texture = CloseButton:CreateTexture()
 	CloseButton.texture:SetPoint("CENTER", CloseButton, "CENTER", 0, 0)
 	CloseButton.texture:SetSize(30, 30)

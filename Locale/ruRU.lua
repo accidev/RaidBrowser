@@ -1,6 +1,6 @@
 -- Russian localization file for ruRU.
 local AddOnName, Engine = ...
-local E = unpack(Engine); --Import: Engine, Locales, PrivateDB, GlobalDB
+local E = unpack(Engine); -- Import: Engine, Locales, PrivateDB, GlobalDB
 local L = E.Libs.ACL:NewLocale(AddOnName, "ruRU")
 
 L["Create"] = "Собрать"
@@ -73,10 +73,12 @@ L["History Raid Tab"] = "История"
 L["TimeToClearRaids"] = "Время удаления рейдов"
 L["TimeToClearRaidsdesc"] = "Время между удалениями рейдов из списка"
 L["HideRaidsWithCD"] = "Скрыть рейды с КД"
-L["HideRaidsWithCDdesc"] = "Если включено, рейды с КД не будут отображаться в списке"
+L["HideRaidsWithCDdesc"] =
+	"Если включено, рейды с КД не будут отображаться в списке"
 
 L["TimeToClearAssemble"] = "Время удаления запросов"
-L["TimeToClearAssembledesc"] = "Время удаления запросов на добавление в группу в 1 вкладке"
+L["TimeToClearAssembledesc"] =
+	"Время удаления запросов на добавление в группу в 1 вкладке"
 
 L["CollapseFrameWidth"] = "Длина главного и прилегающего окна"
 L["CollapseFrameWidthdesc"] = "Длина главного и прилегающего окна"
@@ -89,7 +91,8 @@ L["|cffeda55fLeft-Click|rShowCollapseFrame"] = "|cffeda55fЛКМ|r открыт�
 L["Use /rb"] = "/rb показавает/скрывает окно поиска"
 L["Use /rb minimap"] = "/rb minimap показавает/скрывает иконку у миникарты"
 L["Use /rb help"] = "Используй /rb help чтобы отобразить доступные команды"
-L["UnknownCommand"] = "Неизвестная команда, используйте /rb help чтобы посмотреть список всех доступных команд"
+L["UnknownCommand"] =
+	"Неизвестная команда, используйте /rb help чтобы посмотреть список всех доступных команд"
 
 L["Frame Change Size Tab"] = "Настройки окон"
 L["DelayForAnimatedMinimapIcon"] = "Задержка обновления иконки на миникарте"

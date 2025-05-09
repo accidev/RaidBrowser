@@ -1,5 +1,5 @@
 local AddOnName, Engine = ...
-local E, L, V, P, G = unpack(Engine); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(Engine); -- Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 E.GUI.SetModifiedBackdrop = function(frame)
 	if frame.backdrop then
@@ -38,7 +38,9 @@ function E.GUI:CreateBackdrop(frame, template)
 
 	local parent = (frame.IsObjectType and frame:IsObjectType("Texture") and frame:GetParent()) or frame
 	local backdrop = frame.backdrop or CreateFrame("Frame", nil, parent)
-	if not frame.backdrop then frame.backdrop = backdrop end
+	if not frame.backdrop then
+		frame.backdrop = backdrop
+	end
 
 	-- if frame.forcePixelMode or forcePixelMode then
 	-- 	backdrop:SetOutside(frame, E.mult, E.mult)
@@ -48,7 +50,12 @@ function E.GUI:CreateBackdrop(frame, template)
 		bgFile = "Interface/Tooltips/UI-Tooltip-Background",
 		edgeFile = "Interface/Buttons/WHITE8X8",
 		edgeSize = mult,
-		insets = { left = -mult, right = -mult, top = -mult, bottom = -mult },
+		insets = {
+			left = -mult,
+			right = -mult,
+			top = -mult,
+			bottom = -mult
+		}
 	})
 	backdrop:SetBackdropColor(0, 0, 0, .5)
 	backdrop:SetBackdropBorderColor(0, 0, 0, .5)
@@ -109,12 +116,12 @@ function E.GUI:CreateSortButton(parent, name, tableForSort, paramName, pointner,
 end
 
 function E.GUI:HookScrollBar(scrollbar)
-	if(scrollbar and ElvUI) then
-		local Elv = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+	if (scrollbar and ElvUI) then
+		local Elv = unpack(ElvUI); -- Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 		local SElv = Elv:GetModule("Skins")
 		SElv:HandleScrollBar(scrollbar)
 
-		local border = _G[scrollbar:GetName().."Border"]
+		local border = _G[scrollbar:GetName() .. "Border"]
 		if border then
 			border:Hide()
 		end
@@ -127,7 +134,7 @@ function E.GUI:OptionsFrameInit()
 	E.Libs.AceConfigDialog["Open"](E.Libs.AceConfigDialog, AddOnName)
 	-- if mode == "Open" then
 	local ConfigOpen = E.Libs.AceConfigDialog and E.Libs.AceConfigDialog.OpenFrames and
-		E.Libs.AceConfigDialog.OpenFrames[AddOnName]
+		                   E.Libs.AceConfigDialog.OpenFrames[AddOnName]
 	if ConfigOpen then
 		local frame = ConfigOpen.frame
 		if frame and not E.GUI.OptionsFrame then

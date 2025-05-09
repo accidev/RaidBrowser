@@ -1,9 +1,12 @@
 local AddOnName, Engine = ...
-local E, L, V, P, G = unpack(Engine); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(Engine); -- Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
-P.minimap = { hide = false, minimapPos = 225 }
+P.minimap = {
+	hide = false,
+	minimapPos = 225
+}
 
---gui
+-- gui
 P.CollapseFrameHeight = 30
 P.CollapseFrameWidth = 600
 P.DelayForAnimatedMinimapIcon = 0.1
@@ -40,5 +43,5 @@ P.ChannelNumbers = {
 	["4"] = false,
 	["5"] = false,
 	["6"] = false,
-	["7"] = false,
+	["7"] = false
 }

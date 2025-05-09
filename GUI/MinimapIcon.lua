@@ -1,5 +1,5 @@
 local AddOnName, Engine = ...
-local E, L, V, P, G = unpack(Engine); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(Engine); -- Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local LDBIcon = E.Libs.LDBI
 local LDB = E.Libs.LDB
 
@@ -30,12 +30,8 @@ colorFrame:SetScript("OnUpdate", function(self, elaps)
 				indexRow = 0
 			end
 		end
-		Broker_RB.iconCoords = {
-			indexCell * scale,
-			(indexCell + 1) * scale,
-			indexRow * 2 * scale,
-			((indexRow + 1) * 2) * scale
-		}
+		Broker_RB.iconCoords =
+			{indexCell * scale, (indexCell + 1) * scale, indexRow * 2 * scale, ((indexRow + 1) * 2) * scale}
 		if RBMinimapIcon and RBMinimapIcon.icon then
 			RBMinimapIcon.icon:UpdateCoord()
 		end
@@ -45,12 +41,13 @@ end);
 
 local function getAnchors(frame)
 	local x, y = frame:GetCenter()
-	if not x or not y then return "CENTER" end
+	if not x or not y then
+		return "CENTER"
+	end
 	local hHalf = (x > UIParent:GetWidth() * 2 / 3) and "RIGHT" or (x < UIParent:GetWidth() / 3) and "LEFT" or ""
 	local vHalf = (y > UIParent:GetHeight() / 2) and "TOP" or "BOTTOM"
 	return vHalf .. hHalf, frame, (vHalf == "TOP" and "BOTTOM" or "TOP") .. hHalf
 end
-
 
 local function tooltip_draw()
 	local tooltip = GameTooltip;
@@ -62,8 +59,6 @@ local function tooltip_draw()
 
 	tooltip:Show();
 end
-
-
 
 function E.GUI:InitMinimapIcon()
 	-- E.db.minimap = E.db.minimap or { hide = false };

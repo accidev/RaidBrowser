@@ -2,21 +2,30 @@
 --[[To load the AddOn engine add this to the top of your file:
 	local AddOnName, Engine = ...
 	local E, L, V, P, G = unpack(Engine); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-]]
-
-local AddOnName, Engine = ...
+]] local AddOnName, Engine = ...
 local AceAddon, AceAddonMinor = _G.LibStub("AceAddon-3.0")
 local CallbackHandler = _G.LibStub("CallbackHandler-1.0")
 
-local AddOn = AceAddon:NewAddon(AddOnName, "AceConsole-3.0", "AceEvent-3.0", "AceTimer-3.0", "AceHook-3.0", "AceComm-3.0",
-	"AceSerializer-3.0")
+local AddOn = AceAddon:NewAddon(AddOnName, "AceConsole-3.0", "AceEvent-3.0", "AceTimer-3.0", "AceHook-3.0",
+	"AceComm-3.0", "AceSerializer-3.0")
 AddOn.Callbacks = AddOn.Callbacks or CallbackHandler:New(AddOn)
 AddOn.Core = AddOn.Core or {}
 AddOn.Patterns = AddOn.Patterns or {}
 AddOn.Func = AddOn.Func or {}
 AddOn.GUI = AddOn.GUI or {}
-AddOn.GUI.Options = { type = "group", name = AddOnName .. " Options", childGroups = "tab", args = {} }
-AddOn.DF = { profile = {}, global = {} }; AddOn.privateVars = { profile = {} } -- Defaults
+AddOn.GUI.Options = {
+	type = "group",
+	name = AddOnName .. " Options",
+	childGroups = "tab",
+	args = {}
+}
+AddOn.DF = {
+	profile = {},
+	global = {}
+};
+AddOn.privateVars = {
+	profile = {}
+} -- Defaults
 AddOn.debug = false
 Engine[1] = AddOn
 Engine[2] = {}
@@ -29,7 +38,9 @@ do -- Libs
 	AddOn.Libs = {}
 	AddOn.LibsMinor = {}
 	function AddOn:AddLib(name, major, minor)
-		if not name then return end
+		if not name then
+			return
+		end
 		-- in this case: `major` is the lib table and `minor` is the minor version
 		if type(major) == "table" and type(minor) == "number" then
 			self.Libs[name], self.LibsMinor[name] = major, minor

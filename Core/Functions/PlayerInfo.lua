@@ -1,5 +1,5 @@
 local AddOnName, Engine = ...
-local E, L, V, P, G = unpack(Engine); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(Engine); -- Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local GetTalentTabInfo = _G.GetTalentTabInfo
 local C_Talent = C_Talent
 -- local SendWho = SendWho
@@ -13,7 +13,7 @@ local function GetTalentTabPoints(i)
 end
 local ItemLevelMixIn = _G.ItemLevelMixIn
 
---from stdlib
+-- from stdlib
 local function transform(values, fn)
 	local t = {}
 	for _, v in ipairs(values) do
@@ -43,7 +43,7 @@ local function GetAllSpecInfo()
 end
 
 local function GetActiveSpecIndex()
-	local indices = transform({ 1, 2, 3 }, GetTalentTabPoints)
+	local indices = transform({1, 2, 3}, GetTalentTabPoints)
 	local i, _ = max_of(indices);
 	return i;
 end

@@ -2,15 +2,19 @@ local AddOnName, Engine = ...
 
 local gameLocale
 do -- Locale doesn't exist yet, make it exist.
-	local convert = { ["enGB"] = "enUS", ["esES"] = "esMX", ["itIT"] = "enUS" }
+	local convert = {
+		["enGB"] = "enUS",
+		["esES"] = "esMX",
+		["itIT"] = "enUS"
+	}
 	local lang = GetLocale()
 
 	gameLocale = convert[lang] or lang or "enUS"
 	Engine[2] = Engine[1].Libs.ACL:GetLocale(AddOnName, gameLocale)
 end
 
-local E, L, V, P, G = unpack(Engine); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-E.GUI.Options.args.Header = {         -- Header RaidBrowser
+local E, L, V, P, G = unpack(Engine); -- Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+E.GUI.Options.args.Header = { -- Header RaidBrowser
 	order = 1,
 	type = "header",
 	name = format("%s: |cff99ff33%s|r", L["Version"], GetAddOnMetadata(AddOnName, "Version")),
@@ -18,7 +22,9 @@ E.GUI.Options.args.Header = {         -- Header RaidBrowser
 }
 
 function E:CopyTable(currentTable, defaultTable)
-	if type(currentTable) ~= "table" then currentTable = {} end
+	if type(currentTable) ~= "table" then
+		currentTable = {}
+	end
 
 	if type(defaultTable) == "table" then
 		for option, value in pairs(defaultTable) do

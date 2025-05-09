@@ -1,14 +1,18 @@
 ---@diagnostic disable: undefined-field
 local AddOnName, Engine = ...
-local E, L, V, P, G = unpack(Engine); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(Engine); -- Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 E.GUI.Options.args.SecondTab = {
 	order = 3,
 	type = "group",
 	name = L["Find Raid Tab"],
 	childGroups = "tree",
-	get = function(info) return E.db[info[#info]] end,
-	set = function(info, value) E.db[info[#info]] = value end,
+	get = function(info)
+		return E.db[info[#info]]
+	end,
+	set = function(info, value)
+		E.db[info[#info]] = value
+	end,
 	args = {
 		-- intro = {
 		-- 	order = 1,
@@ -28,53 +32,54 @@ E.GUI.Options.args.SecondTab = {
 			max = 180,
 			step = 1,
 			name = L["TimeToClearRaids"],
-			desc = L["TimeToClearRaidsdesc"],
+			desc = L["TimeToClearRaidsdesc"]
 		},
 		HideRaidsWithCD = {
 			order = 5,
 			type = "toggle",
 			name = L["HideRaidsWithCD"],
 			desc = L["HideRaidsWithCDdesc"],
-			set = function(info, value) 
-				E.db[info[#info]] = value 
+			set = function(info, value)
+				E.db[info[#info]] = value
 				E.GUI:UpdateFilteredRaidsTable()
 				E.GUI:FindFrameRaidInfoUpdate()
-			end,
-		},
+			end
+		}
 	}
 }
 local _tempTable = {}
-local menuList = {
-	{
-		text = L["SendMSGToRL(current)"],
-		notCheckable = 1,
-		arg1 = _tempTable,
-		func = function(self, arg1, arg2)
-			SendChatMessage(
-				"RB!: Хочу в группу, я " .. arg2.ilvl .. " " .. arg2.playerClassName .. " " .. arg2.currentSpecName,
-				"WHISPER", GetDefaultLanguage(), arg1.rlName);
-			E.Core:SendRequestAddToRaid(arg1.rlName)
-		end
-	},
-}
+local menuList = {{
+	text = L["SendMSGToRL(current)"],
+	notCheckable = 1,
+	arg1 = _tempTable,
+	func = function(self, arg1, arg2)
+		SendChatMessage("RB!: Хочу в группу, я " .. arg2.ilvl .. " " .. arg2.playerClassName .. " " ..
+			                arg2.currentSpecName, "WHISPER", GetDefaultLanguage(), arg1.rlName);
+		E.Core:SendRequestAddToRaid(arg1.rlName)
+	end
+}}
 
 local factionToTexture = {
 	["Alliance"] = [[Interface\AddOns\RaidBrowser\Media\Textures\all]],
 	["Horde"] = [[Interface\AddOns\RaidBrowser\Media\Textures\hor]],
-	["Renegade"] = [[Interface\AddOns\RaidBrowser\Media\Textures\ren]],
+	["Renegade"] = [[Interface\AddOns\RaidBrowser\Media\Textures\ren]]
 }
 
 E.GUI.timerToCheck = nil
 E.GUI.canUpdateFindFrame = true
-function E.GUI:SetCanUpdateFindFrame(newBool) self.canUpdateFindFrame = newBool end
+function E.GUI:SetCanUpdateFindFrame(newBool)
+	self.canUpdateFindFrame = newBool
+end
 
-function E.GUI:GetCanUpdateFindFrame() return self.canUpdateFindFrame end
+function E.GUI:GetCanUpdateFindFrame()
+	return self.canUpdateFindFrame
+end
 
 E.GUI.filteredRaidsTable = {}
 
 function E.GUI:UpdateFilteredRaidsTable()
 	wipe(E.GUI.filteredRaidsTable)
-	
+
 	if E.db.HideRaidsWithCD then
 		for i, raid in ipairs(E.Core.raidsTable) do
 			local hasCD = false
@@ -104,7 +109,7 @@ function E.GUI:FindFrameRaidInfoUpdate()
 		if not E.GUI.CollapseFrame.MainFrame.FindFrame:IsVisible() then
 			return;
 		end
-		
+
 		local offset = FauxScrollFrame_GetOffset(E.GUI.CollapseFrame.MainFrame.FindFrame.ScrollParent.ScrollBar);
 		local numRecords = #E.GUI.filteredRaidsTable;
 		local numDisplayedRecords = math.min(E.GUI.numLogRecordFrames, numRecords - offset);
@@ -126,8 +131,9 @@ function E.GUI:FindFrameRaidInfoUpdate()
 end
 
 function E.GUI:CreateFindFrameRecord(i)
-	E.GUI.CollapseFrame.MainFrame.FindFrame.ScrollParent.Records[i] = E.GUI.CollapseFrame.MainFrame.FindFrame
-		.ScrollParent.Records[i] or CreateFrame("Button", nil, E.GUI.CollapseFrame.MainFrame.FindFrame.ScrollParent);
+	E.GUI.CollapseFrame.MainFrame.FindFrame.ScrollParent.Records[i] =
+		E.GUI.CollapseFrame.MainFrame.FindFrame.ScrollParent.Records[i] or
+			CreateFrame("Button", nil, E.GUI.CollapseFrame.MainFrame.FindFrame.ScrollParent);
 	local record = E.GUI.CollapseFrame.MainFrame.FindFrame.ScrollParent.Records[i]
 	record.raidInfo = record.raidInfo or {
 		tank = true,
@@ -139,10 +145,10 @@ function E.GUI:CreateFindFrameRecord(i)
 		heal = true,
 		lastSpamTime = time(),
 		dd = true,
-		instanceName = { { "Логово Магтеридона", 2 }, { "Испытание крестоносца", 2 } },
+		instanceName = {{"Логово Магтеридона", 2}, {"Испытание крестоносца", 2}},
 		rlName = "Шутка",
 		patterns = {},
-		size = 25,
+		size = 25
 	};
 	record:SetHeight(self.recordHeight);
 	record:SetWidth(self.recordWidth);
@@ -163,7 +169,6 @@ function E.GUI:CreateFindFrameRecord(i)
 	record.factionTexture:SetPoint("TOPLEFT", record, "TOPLEFT", 10 * self.recordHeight, 0);
 	record.factionTexture:SetTexture([[Interface\AddOns\RaidBrowser\Media\Textures\all]]);
 
-
 	record.ddTexture = record.ddTexture or record:CreateTexture();
 	record.ddTexture:SetSize(self.recordHeight, self.recordHeight);
 	record.ddTexture:SetPoint("TOPLEFT", record, "TOPLEFT", 12 * self.recordHeight, 0);
@@ -179,7 +184,6 @@ function E.GUI:CreateFindFrameRecord(i)
 	record.tTexture:SetPoint("TOPLEFT", record, "TOPLEFT", 14 * self.recordHeight, 0);
 	record.tTexture:SetTexture([[Interface\AddOns\RaidBrowser\Media\Textures\tank]]);
 	E.GUI:CreateBackdrop(record)
-
 
 	if i == 1 then
 		record:SetPoint("TOPLEFT", E.GUI.CollapseFrame.MainFrame.FindFrame.ScrollParent, "TOPLEFT", 0, 0);
@@ -203,10 +207,8 @@ function E.GUI:CreateFindFrameRecord(i)
 				text = L["SendMSGToRL(spec" .. q .. ")"],
 				notCheckable = 1,
 				func = function()
-					SendChatMessage(
-						"RB!: Хочу в группу, я " ..
-						menuList[1].arg2.playerClassName .. " " .. E.Core:GetSpecNameFromTalents(q), "WHISPER",
-						GetDefaultLanguage(), menuList[1].arg1.rlName);
+					SendChatMessage("RB!: Хочу в группу, я " .. menuList[1].arg2.playerClassName .. " " ..
+						                E.Core:GetSpecNameFromTalents(q), "WHISPER", GetDefaultLanguage(), menuList[1].arg1.rlName);
 					E.Core:SendRequestAddToRaid(menuList[1].arg1.rlName);
 				end
 			}
@@ -237,7 +239,8 @@ function E.GUI:CreateFindFrameRecord(i)
 		GameTooltip:AddLine(" ", 1, 1, 1);
 		GameTooltip:AddDoubleLine(L["Sender"], self.raidInfo.rlName, 1, 1, 1, 1, 1, 0);
 		GameTooltip:AddDoubleLine(L["Raid"], self.raidInfo.raidName, 1, 1, 1, 1, 1, 0);
-		GameTooltip:AddDoubleLine(L["Time"], date("%H:%M %m-%d-%Y", self.raidInfo.lastSpamTime).." "..string.format("(%sc назад)",time()-self.raidInfo.lastSpamTime), 1, 1, 1, 1, 1, 0);
+		GameTooltip:AddDoubleLine(L["Time"], date("%H:%M %m-%d-%Y", self.raidInfo.lastSpamTime) .. " " ..
+			string.format("(%sc назад)", time() - self.raidInfo.lastSpamTime), 1, 1, 1, 1, 1, 0);
 		GameTooltip:AddLine(" ", 1, 1, 1);
 		GameTooltip:AddLine(" ", 1, 1, 1);
 		GameTooltip:AddDoubleLine(L["Message"], E.Core:SplitString(self.raidInfo.message, 50, "", ""), 1, 1, 1, 1, 0, 0)
@@ -314,45 +317,46 @@ function E.GUI:CreateFindFrame()
 	-- self.fontHeight = select(2, getglobal(self.font):GetFont());
 	-- self.recordHeight = self.fontHeight + 15;
 	-- self.recordWidth = E.GUI.CollapseFrame.MainFrame.FindFrame.ScrollParent:GetWidth() - 35
-	
+
 	local SortRaidName = E.GUI:CreateSortButton(E.GUI.CollapseFrame.MainFrame.FindFrame, "SortRaidName",
-		E.GUI.GetFilteredRaidsTable, "raidName", { "BOTTOMLEFT", ScrollParent, "TOPLEFT", 0, 0 }, true, nil)
+		E.GUI.GetFilteredRaidsTable, "raidName", {"BOTTOMLEFT", ScrollParent, "TOPLEFT", 0, 0}, true, nil)
 	SortRaidName.fs:SetText(L["SortRaidName"])
 	-- SortRaidName:Size(4 * self.recordHeight,  self.recordHeight);
 	E.GUI:Size(SortRaidName, 4 * self.recordHeight, self.recordHeight)
 
-	local SortRLName = E.GUI:CreateSortButton(E.GUI.CollapseFrame.MainFrame.FindFrame, "SortRLName", 
-		E.GUI.GetFilteredRaidsTable, "rlName", { "BOTTOMLEFT", ScrollParent, "TOPLEFT", 4.2 * self.recordHeight, 0 }, true, nil)
+	local SortRLName = E.GUI:CreateSortButton(E.GUI.CollapseFrame.MainFrame.FindFrame, "SortRLName",
+		E.GUI.GetFilteredRaidsTable, "rlName", {"BOTTOMLEFT", ScrollParent, "TOPLEFT", 4.2 * self.recordHeight, 0}, true, nil)
 	SortRLName.fs:SetText(L["SortRLName"])
 	-- SortRLName:Size(4 * self.recordHeight,  self.recordHeight);
 	E.GUI:Size(SortRLName, 4 * self.recordHeight, self.recordHeight)
 
 	local SortRLFaction = E.GUI:CreateSortButton(E.GUI.CollapseFrame.MainFrame.FindFrame, "SortFaction",
-		E.GUI.GetFilteredRaidsTable, "rlFaction", { "BOTTOMLEFT", ScrollParent, "TOPLEFT", 10 * self.recordHeight, 0 }, nil, true)
+		E.GUI.GetFilteredRaidsTable, "rlFaction", {"BOTTOMLEFT", ScrollParent, "TOPLEFT", 10 * self.recordHeight, 0}, nil,
+		true)
 	SortRLFaction.texture:SetTexture(factionToTexture[UnitFactionGroup("player")]);
 	-- SortRLFaction:Size(self.recordHeight,  self.recordHeight);
 	E.GUI:Size(SortRLFaction, self.recordHeight, self.recordHeight)
 
-	local SortDD = E.GUI:CreateSortButton(E.GUI.CollapseFrame.MainFrame.FindFrame, "SortDD", 
-		E.GUI.GetFilteredRaidsTable, "dd", { "BOTTOMLEFT", ScrollParent, "TOPLEFT", 12 * self.recordHeight, 0 }, nil, true)
+	local SortDD = E.GUI:CreateSortButton(E.GUI.CollapseFrame.MainFrame.FindFrame, "SortDD", E.GUI.GetFilteredRaidsTable,
+		"dd", {"BOTTOMLEFT", ScrollParent, "TOPLEFT", 12 * self.recordHeight, 0}, nil, true)
 	SortDD.texture:SetTexture([[Interface\AddOns\RaidBrowser\Media\Textures\dps]]);
 	-- SortDD:Size(self.recordHeight,  self.recordHeight);
 	E.GUI:Size(SortDD, self.recordHeight, self.recordHeight)
 
-	local SortHeal = E.GUI:CreateSortButton(E.GUI.CollapseFrame.MainFrame.FindFrame, "SortHeal", 
-		E.GUI.GetFilteredRaidsTable, "heal", { "BOTTOMLEFT", ScrollParent, "TOPLEFT", 13 * self.recordHeight, 0 }, nil, true)
+	local SortHeal = E.GUI:CreateSortButton(E.GUI.CollapseFrame.MainFrame.FindFrame, "SortHeal",
+		E.GUI.GetFilteredRaidsTable, "heal", {"BOTTOMLEFT", ScrollParent, "TOPLEFT", 13 * self.recordHeight, 0}, nil, true)
 	SortHeal.texture:SetTexture([[Interface\AddOns\RaidBrowser\Media\Textures\healer]]);
 	-- SortHeal:Size(self.recordHeight,  self.recordHeight);
 	E.GUI:Size(SortHeal, self.recordHeight, self.recordHeight)
 
-	local SortTank = E.GUI:CreateSortButton(E.GUI.CollapseFrame.MainFrame.FindFrame, "SortTank", 
-		E.GUI.GetFilteredRaidsTable, "tank", { "BOTTOMLEFT", ScrollParent, "TOPLEFT", 14 * self.recordHeight, 0 }, nil, true)
+	local SortTank = E.GUI:CreateSortButton(E.GUI.CollapseFrame.MainFrame.FindFrame, "SortTank",
+		E.GUI.GetFilteredRaidsTable, "tank", {"BOTTOMLEFT", ScrollParent, "TOPLEFT", 14 * self.recordHeight, 0}, nil, true)
 	SortTank.texture:SetTexture([[Interface\AddOns\RaidBrowser\Media\Textures\tank]]);
 	-- SortTank:Size(self.recordHeight,  self.recordHeight);
 	E.GUI:Size(SortTank, self.recordHeight, self.recordHeight)
 
-	local SortILVL = E.GUI:CreateSortButton(E.GUI.CollapseFrame.MainFrame.FindFrame, "SortILVL", 
-		E.GUI.GetFilteredRaidsTable, "ilvl", { "BOTTOMRIGHT", ScrollParent, "TOPRIGHT", -35, 0 }, true, nil)
+	local SortILVL = E.GUI:CreateSortButton(E.GUI.CollapseFrame.MainFrame.FindFrame, "SortILVL",
+		E.GUI.GetFilteredRaidsTable, "ilvl", {"BOTTOMRIGHT", ScrollParent, "TOPRIGHT", -35, 0}, true, nil)
 	SortILVL.fs:SetText(L["SortILVL"])
 	-- SortILVL:Size(4 * self.recordHeight,  self.recordHeight);
 	E.GUI:Size(SortILVL, 1.2 * self.recordHeight, self.recordHeight)
@@ -383,7 +387,7 @@ end
 
 function E.GUI:UpdateFindFrame()
 	self.numLogRecordFrames = math.floor((E.GUI.CollapseFrame.MainFrame.FindFrame.ScrollParent:GetHeight() - 3) /
-		self.recordHeight);
+		                                     self.recordHeight);
 	for i = 1, #E.GUI.CollapseFrame.MainFrame.FindFrame.ScrollParent.Records do
 		if E.GUI.CollapseFrame.MainFrame.FindFrame.ScrollParent.Records[i] then
 			E.GUI.CollapseFrame.MainFrame.FindFrame.ScrollParent.Records[i]:Hide();

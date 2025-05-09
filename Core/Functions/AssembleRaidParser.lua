@@ -1,11 +1,9 @@
 local AddOnName, Engine = ...
-local E, L, V, P, G = unpack(Engine); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local E, L, V, P, G = unpack(Engine); -- Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 
 E.Core.InvTable = {}
 -- local SendAddToRaidPrefix = "RB!_SendAddToRaidPrefix"
 local ReceiveRaidAsseblePrefix = "RB_RequestAddToRaid"
-
-
 
 local function ReceiveRequestAddToRaid(prefix, msg, dist, sender)
 	local success, receivedPlayerData = E:Deserialize(msg)
@@ -80,6 +78,5 @@ end
 -- function TestRequest1(target)
 --     E.Core:SendRequestAddToRaid(target)
 -- end
-
 
 -- SendAddonMessage("TEST", "test", "CHANNEL", "4.ПоискСпутников");
