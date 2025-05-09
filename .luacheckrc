@@ -42974,6 +42974,7 @@ globals = {
 	"ItemUpgradeFramePagingFrameNextPageButton",
 	"ItemUpgradeFramePagingFramePrevPageButton",
 	"EquipmentFlyoutFrameNavigationFrame",
-
-
+	"UpdateFilteredRaidsTable",
+	"filteredRaidsTable",
+	"tableToSort",
 }

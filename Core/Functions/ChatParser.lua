@@ -151,6 +151,9 @@ function E.Core:RemoveRecordsByName(sender)
 			tableindex = tableindex + 1
 		end
 	end
+	if E.GUI.UpdateFilteredRaidsTable then
+		E.GUI:UpdateFilteredRaidsTable();
+	end
 	E.GUI:FindFrameRaidInfoUpdate();
 end
 
@@ -163,6 +166,9 @@ function E.Core:ClearRaidTableAtTime()
 		else
 			tableindex = tableindex + 1
 		end
+	end
+	if E.GUI.UpdateFilteredRaidsTable then
+		E.GUI:UpdateFilteredRaidsTable();
 	end
 end
 
@@ -222,6 +228,9 @@ local function ChatParserFunc(self, event, message, sender, language, _, _, _, _
 		tableForAdd["latestMSG"]    = message;
 		E.Core:RemoveRecordsByName(sender);
 		table.insert(E.Core.raidsTable, tableForAdd)
+		if E.GUI.UpdateFilteredRaidsTable then
+			E.GUI:UpdateFilteredRaidsTable();
+		end
 		E.GUI:FindFrameRaidInfoUpdate();
 	end
 end

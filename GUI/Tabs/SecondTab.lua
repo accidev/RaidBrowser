@@ -37,6 +37,7 @@ E.GUI.Options.args.SecondTab = {
 			desc = L["HideRaidsWithCDdesc"],
 			set = function(info, value) 
 				E.db[info[#info]] = value 
+				E.GUI:UpdateFilteredRaidsTable()
 				E.GUI:FindFrameRaidInfoUpdate()
 			end,
 		},
@@ -69,38 +70,49 @@ function E.GUI:SetCanUpdateFindFrame(newBool) self.canUpdateFindFrame = newBool 
 
 function E.GUI:GetCanUpdateFindFrame() return self.canUpdateFindFrame end
 
+E.GUI.filteredRaidsTable = {}
+
+function E.GUI:UpdateFilteredRaidsTable()
+	wipe(E.GUI.filteredRaidsTable)
+	
+	if E.db.HideRaidsWithCD then
+		for i, raid in ipairs(E.Core.raidsTable) do
+			local hasCD = false
+			for _, v in pairs(raid.instanceName) do
+				if E.Core:IsRaidInCD(v[1], raid.size, v[2]) then
+					hasCD = true
+					break
+				end
+			end
+			if not hasCD then
+				table.insert(E.GUI.filteredRaidsTable, raid)
+			end
+		end
+	else
+		for i, raid in ipairs(E.Core.raidsTable) do
+			table.insert(E.GUI.filteredRaidsTable, raid)
+		end
+	end
+end
+
+function E.GUI:GetFilteredRaidsTable()
+	return E.GUI.filteredRaidsTable
+end
+
 function E.GUI:FindFrameRaidInfoUpdate()
 	if (E.GUI:GetCanUpdateFindFrame()) then
 		if not E.GUI.CollapseFrame.MainFrame.FindFrame:IsVisible() then
 			return;
 		end
-		local filteredRaids = {}
-		
-		if E.db.HideRaidsWithCD then
-			for i, raid in ipairs(E.Core.raidsTable) do
-				local hasCD = false
-				for _, v in pairs(raid.instanceName) do
-					if E.Core:IsRaidInCD(v[1], raid.size, v[2]) then
-						hasCD = true
-						break
-					end
-				end
-				if not hasCD then
-					table.insert(filteredRaids, raid)
-				end
-			end
-		else
-			filteredRaids = E.Core.raidsTable
-		end
 		
 		local offset = FauxScrollFrame_GetOffset(E.GUI.CollapseFrame.MainFrame.FindFrame.ScrollParent.ScrollBar);
-		local numRecords = #filteredRaids;
+		local numRecords = #E.GUI.filteredRaidsTable;
 		local numDisplayedRecords = math.min(E.GUI.numLogRecordFrames, numRecords - offset);
 		local record;
 		for i = 1, E.GUI.numLogRecordFrames do
 			record = E.GUI.CollapseFrame.MainFrame.FindFrame.ScrollParent.Records[i];
 			local logIndex = i + offset - 1;
-			local logTableRecord = filteredRaids[#filteredRaids - logIndex];
+			local logTableRecord = E.GUI.filteredRaidsTable[#E.GUI.filteredRaidsTable - logIndex];
 			if logIndex < numRecords then
 				record:UpdateRaidInfo(logTableRecord);
 				record:Show();
@@ -303,27 +315,6 @@ function E.GUI:CreateFindFrame()
 	-- self.recordHeight = self.fontHeight + 15;
 	-- self.recordWidth = E.GUI.CollapseFrame.MainFrame.FindFrame.ScrollParent:GetWidth() - 35
 	
-	E.GUI.GetFilteredRaidsTable = function()
-		if not E.db.HideRaidsWithCD then
-			return E.Core.raidsTable
-		end
-		
-		local filteredRaids = {}
-		for i, raid in ipairs(E.Core.raidsTable) do
-			local hasCD = false
-			for _, v in pairs(raid.instanceName) do
-				if E.Core:IsRaidInCD(v[1], raid.size, v[2]) then
-					hasCD = true
-					break
-				end
-			end
-			if not hasCD then
-				table.insert(filteredRaids, raid)
-			end
-		end
-		return filteredRaids
-	end
-
 	local SortRaidName = E.GUI:CreateSortButton(E.GUI.CollapseFrame.MainFrame.FindFrame, "SortRaidName",
 		E.GUI.GetFilteredRaidsTable, "raidName", { "BOTTOMLEFT", ScrollParent, "TOPLEFT", 0, 0 }, true, nil)
 	SortRaidName.fs:SetText(L["SortRaidName"])
@@ -413,6 +404,7 @@ end
 
 function E.GUI:SecondTabInit()
 	E.GUI:CreateFindFrame();
+	E.GUI:UpdateFilteredRaidsTable();
 end
 
 -- function TestaddS()

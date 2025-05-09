@@ -89,7 +89,8 @@ function E.GUI:CreateSortButton(parent, name, tableForSort, paramName, pointner,
 	frame.tableForSort = tableForSort
 	frame.paramName = paramName
 	frame:SetScript("OnClick", function(self)
-		table.sort(self.tableForSort, function(a, b)
+		local tableToSort = type(self.tableForSort) == "function" and self.tableForSort() or self.tableForSort
+		table.sort(tableToSort, function(a, b)
 			if a and b and a[self.paramName] and b[self.paramName] then
 				if self.lastSort then
 					return (a[self.paramName] > b[self.paramName]);
